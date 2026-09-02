@@ -91,7 +91,8 @@ def render_page():
         if p['pattern_type'] in pattern_types and p['state'] in states
     ]
     
-    render_command_header(prov_status, res.get('timestamp', datetime.now(timezone.utc)), res.get('markets_scanned', 0), scan_res=res)
+    st_status = {'is_persistent': getattr(db, 'is_persistent', False)}
+    render_command_header(prov_status, res.get('timestamp', datetime.now(timezone.utc)), res.get('markets_scanned', 0), scan_res=res, storage_status=st_status)
     render_hero_metrics(len(filtered_patterns), res.get('markets_scanned', 0))
     
     # New Pattern Alert Banner

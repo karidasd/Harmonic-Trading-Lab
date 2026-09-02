@@ -21,7 +21,8 @@ class TestPredictionPipeline(unittest.TestCase):
 
     def tearDown(self):
         import os, gc
-        del self.db
+        if hasattr(self, 'db') and self.db is not None:
+            del self.db
         gc.collect()
         if os.path.exists(self.db_path):
             try:
@@ -30,8 +31,8 @@ class TestPredictionPipeline(unittest.TestCase):
                 pass
 
     def _get_completed_pattern(self):
-        for sym in ['EURUSD', 'GBPUSD', 'USDCAD', 'EURJPY']:
-            for tf in ['M15', 'H1', 'H4', 'M30']:
+        for sym in ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'USDCAD', 'NZDUSD', 'EURJPY', 'GBPJPY', 'XAUUSD']:
+            for tf in ['M15', 'M30', 'H1', 'H4']:
                 df = self.prov.get_ohlcv(sym, tf, bars=300)
                 if df is not None and not df.empty:
                     pats = self.detector.scan_dataframe(df, sym, tf)

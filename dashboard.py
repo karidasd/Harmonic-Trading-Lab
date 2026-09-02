@@ -91,7 +91,7 @@ with st.sidebar:
     
     st.markdown("""
     <div style="margin-top: 40px; font-size: 0.75rem; color: #64748B; border-top: 1px solid #1E293B; padding-top: 10px;">
-        <div>Version: <b>2.1.0-PROD</b></div>
+        <div>Version: <b>2.2.0-PROD</b> (Harmonic Trading Lab v2.2)</div>
         <div>Causal Replay: <b>16,276 Pass</b></div>
         <div style="margin-top: 8px;"><a href="https://github.com/karidasd/Harmonic-Trading-Lab" target="_blank" style="color: #00F0FF; text-decoration: none;">GitHub Repository ↗</a></div>
     </div>

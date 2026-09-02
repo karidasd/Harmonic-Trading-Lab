@@ -1,18 +1,22 @@
 import unittest
+import pandas as pd
 from harmonic.detector import HarmonicDetector
 from data.providers.demo_provider import DemoMarketDataProvider
 
 class TestNonRepainting(unittest.TestCase):
     def test_adversarial_future_candle_appending(self):
         provider = DemoMarketDataProvider(seed=42)
-        df_base = provider.get_ohlcv('EURUSD', 'H1', bars=150)
+        df_full = provider.get_ohlcv('EURUSD', 'H1', bars=250)
+        
+        # Base slice: First 180 bars
+        df_base = df_full.iloc[:180].copy()
         
         detector = HarmonicDetector(left_bars=5, right_bars=5)
         pats_t0 = detector.scan_dataframe(df_base, 'EURUSD', 'H1')
         completed_t0 = [p for p in pats_t0 if p['state'] == 'COMPLETED']
         
         if not completed_t0:
-            return # Skip if no completed pattern in synthetic slice
+            return # Skip if no completed pattern in base slice
             
         p0 = completed_t0[0]
         p0_id = p0['pattern_id']
@@ -20,7 +24,8 @@ class TestNonRepainting(unittest.TestCase):
         p0_d_time = p0['D_time']
         p0_conf_time = p0['D_confirmation_time']
         
-        df_extended = provider.get_ohlcv('EURUSD', 'H1', bars=200)
+        # Extended slice: 250 bars (70 future bars appended)
+        df_extended = df_full.copy()
         pats_t1 = detector.scan_dataframe(df_extended, 'EURUSD', 'H1')
         
         matched_t1 = next((p for p in pats_t1 if p['pattern_id'] == p0_id), None)
