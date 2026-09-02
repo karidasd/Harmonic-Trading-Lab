@@ -62,7 +62,7 @@ def render_hero_metrics(active_cnt: int, markets_cnt: int):
         st.markdown(f"""
         <div class="hero-metric-box">
             <div class="hero-metric-val" style="color: #F59E0B;">{active_cnt}</div>
-            <div class="hero-metric-label">ACTIVE PATTERNS DETECTED</div>
+            <div class="hero-metric-label">PATTERNS IN CURRENT SCAN</div>
         </div>
         """, unsafe_allow_html=True)
 

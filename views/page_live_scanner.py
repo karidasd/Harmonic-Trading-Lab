@@ -51,7 +51,7 @@ def render_page():
     col_table, col_preview = st.columns([7, 5])
     
     with col_table:
-        st.markdown("<div style='font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;'>📊 ACTIVE HARMONIC SIGNALS</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;'>📊 DETECTED HARMONIC PATTERNS</div>", unsafe_allow_html=True)
         if filtered_patterns:
             df_table = render_scanner_table(filtered_patterns)
             st.dataframe(df_table, use_container_width=True, height=420)

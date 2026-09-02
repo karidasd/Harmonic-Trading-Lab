@@ -35,11 +35,11 @@ if 'last_scan_result' not in st.session_state:
 with st.sidebar:
     st.markdown("""
     <div style="padding: 10px 0 20px 0; border-bottom: 1px solid #1E293B; margin-bottom: 15px;">
-        <div style="font-size: 1.4rem; font-weight: 800; color: #00F0FF; font-family: 'JetBrains Mono';">
-            ⚡ HARMONIC_LIVE
+        <div style="font-size: 1.3rem; font-weight: 800; color: #00F0FF; font-family: 'JetBrains Mono';">
+            ⚡ HARMONIC TRADING LAB
         </div>
         <div style="font-size: 0.75rem; color: #94A3B8; font-weight: 500;">
-            Causal Quantitative Scanner
+            Live Harmonic Scanner
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -85,26 +85,26 @@ with st.sidebar:
     <div style="margin-top: 40px; font-size: 0.75rem; color: #64748B; border-top: 1px solid #1E293B; padding-top: 10px;">
         <div>Version: <b>2.0.0-PROD</b></div>
         <div>Causal Replay: <b>16,276 Pass</b></div>
-        <div style="margin-top: 8px;"><a href="https://github.com" target="_blank" style="color: #00F0FF; text-decoration: none;">GitHub Repository ↗</a></div>
+        <div style="margin-top: 8px;"><a href="https://github.com/karidasd/Harmonic-Trading-Lab" target="_blank" style="color: #00F0FF; text-decoration: none;">GitHub Repository ↗</a></div>
     </div>
     """, unsafe_allow_html=True)
 
 # Page Router
 if page == "01 LIVE SCANNER":
-    from pages.page_live_scanner import render_page
+    from views.page_live_scanner import render_page
     render_page()
 elif page == "02 PATTERN CHART":
-    from pages.page_pattern_chart import render_page
+    from views.page_pattern_chart import render_page
     render_page()
 elif page == "03 MARKET MATRIX":
-    from pages.page_market_matrix import render_page
+    from views.page_market_matrix import render_page
     render_page()
 elif page == "04 PATTERN EXPLORER":
-    from pages.page_pattern_explorer import render_page
+    from views.page_pattern_explorer import render_page
     render_page()
 elif page == "05 RESEARCH":
-    from pages.page_research import render_page
+    from views.page_research import render_page
     render_page()
 elif page == "06 METHODOLOGY":
-    from pages.page_methodology import render_page
+    from views.page_methodology import render_page
     render_page()

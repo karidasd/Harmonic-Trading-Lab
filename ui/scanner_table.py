@@ -22,15 +22,14 @@ def render_scanner_table(patterns: List[Dict[str, Any]]) -> pd.DataFrame:
         d_str = f"{p.get('D_price', 0):.{prec}f}" if p.get('D_price') else "—"
         
         rows.append({
-            'ID': p['pattern_id'],
             'Pair': sym,
             'TF': p['timeframe'],
             'Pattern': p['pattern_type'],
             'Direction': f"{dir_emoji} {p['direction']}",
             'State': p['state'],
-            'Quality': p['quality_score'],
-            'PRZ Zone': prz_str,
+            'Quality': f"{p['quality_score']}/100",
             'D Price': d_str,
+            'PRZ Zone': prz_str,
             'Key Ratios': r_str
         })
         
