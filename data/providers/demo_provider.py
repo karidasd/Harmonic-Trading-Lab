@@ -15,7 +15,7 @@ class DemoMarketDataProvider(BaseMarketDataProvider):
         self.cache = {}
 
     def get_ohlcv(self, symbol: str, timeframe: str, bars: int = 300) -> Optional[pd.DataFrame]:
-        key = (symbol, timeframe)
+        key = (symbol, timeframe, bars)
         if key in self.cache:
             return self.cache[key]
             
@@ -43,37 +43,40 @@ class DemoMarketDataProvider(BaseMarketDataProvider):
         cycles = 3.5 * np.sin(np.linspace(0, 5 * np.pi, bars)) * (25 * pip)
         price_series = p0 + np.cumsum(steps) + cycles
         
-        opens, highs, lows, closes, vols = [], [], [], [], []
+        opens, highs, lows, closes, volumes = [], [], [], [], []
         
         for i in range(bars):
-            c_price = price_series[i]
-            bar_noise = rng.normal(0, 0.4 * pip)
-            o = c_price + bar_noise
-            c = c_price - bar_noise
-            h = max(o, c) + abs(rng.normal(0, 0.8 * pip))
-            l = min(o, c) - abs(rng.normal(0, 0.8 * pip))
-            v = int(rng.uniform(100, 1500))
+            c = price_series[i]
+            o = price_series[i-1] if i > 0 else c - (0.5 * pip)
+            h = max(o, c) + abs(rng.normal(0, 3 * pip))
+            l = min(o, c) - abs(rng.normal(0, 3 * pip))
+            v = int(rng.integers(100, 2500))
             
             opens.append(o)
             highs.append(h)
             lows.append(l)
             closes.append(c)
-            vols.append(v)
+            volumes.append(v)
             
         df = pd.DataFrame({
-            'open': opens, 'high': highs, 'low': lows, 'close': closes, 'volume': vols
+            'open': opens,
+            'high': highs,
+            'low': lows,
+            'close': closes,
+            'volume': volumes
         }, index=pd.DatetimeIndex(times, tz='UTC'))
         
-        norm_df = DataNormalizer.normalize_ohlcv(df, symbol, timeframe)
-        self.cache[key] = norm_df
-        return norm_df
+        df_norm = DataNormalizer.normalize_ohlcv(df, symbol, timeframe)
+        self.cache[key] = df_norm
+        return df_norm
 
     def get_status(self) -> Dict[str, Any]:
         return {
-            'provider_name': 'DEMO MARKET FEED',
-            'mode': 'DEMO',
-            'status': 'ONLINE',
+            'provider_name': 'HARMONIC DEMO ENGINE',
             'is_live': False,
-            'is_demo': True,
-            'description': 'Offline deterministic synthetic market feed'
+            'mode': 'DEMO',
+            'status': 'OPERATIONAL',
+            'data_delay_sec': 0.0,
+            'supported_timeframes': ['M15', 'M30', 'H1', 'H4', 'D1'],
+            'supported_symbols': ['EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'USDCAD', 'NZDUSD', 'EURJPY', 'GBPJPY', 'XAUUSD']
         }
