@@ -1,0 +1,67 @@
+{
+  "model_name": "HistGradientBoosting (Calibrated)",
+  "model_version": "NO_EDGE_NOT_DEPLOYED",
+  "gate_passed": false,
+  "dataset_size_n": 289,
+  "train_n": 23,
+  "test_n": 266,
+  "feature_count": 29,
+  "naive_baseline_brier": 0.1562,
+  "model_a": {
+    "name": "Logistic Regression",
+    "oos_auc": 0.4296,
+    "oos_brier": 0.1769,
+    "oos_logloss": 0.5409
+  },
+  "model_b": {
+    "name": "HistGradientBoosting",
+    "oos_auc": 0.5,
+    "oos_brier": 0.1621,
+    "oos_logloss": 0.509
+  },
+  "best_model": {
+    "name": "HistGradientBoosting (Calibrated)",
+    "oos_auc": 0.5,
+    "oos_brier": 0.1621,
+    "oos_logloss": 0.509,
+    "brier_improvement": -0.0059
+  },
+  "bucket_table": [
+    {
+      "bucket": "< 40%",
+      "N": 0,
+      "predicted_prob": 0.0,
+      "actual_hit_rate": 0.0
+    },
+    {
+      "bucket": "40\u201350%",
+      "N": 0,
+      "predicted_prob": 0.0,
+      "actual_hit_rate": 0.0
+    },
+    {
+      "bucket": "50\u201360%",
+      "N": 0,
+      "predicted_prob": 0.0,
+      "actual_hit_rate": 0.0
+    },
+    {
+      "bucket": "60\u201370%",
+      "N": 0,
+      "predicted_prob": 0.0,
+      "actual_hit_rate": 0.0
+    },
+    {
+      "bucket": "70\u201380%",
+      "N": 266,
+      "predicted_prob": 70.7,
+      "actual_hit_rate": 81.6
+    },
+    {
+      "bucket": "> 80%",
+      "N": 0,
+      "predicted_prob": 0.0,
+      "actual_hit_rate": 0.0
+    }
+  ]
+}

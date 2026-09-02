@@ -1,13 +1,14 @@
 import streamlit as st
 import plotly.graph_objects as go
 import textwrap
+import json
+import os
 from research.research_metrics import ResearchDataLoader
 from ui.components import render_win_rate_gauge
 
 def render_page():
     res_data = ResearchDataLoader.load_frozen_results()
     val_fx = res_data.get('validation_baseline_fx_only', {})
-    hero = res_data.get('hero_metric', {})
     
     st.markdown(textwrap.dedent("""
     <div style="border-bottom: 1px solid #1E293B; padding-bottom: 10px; margin-bottom: 20px;">
@@ -20,7 +21,7 @@ def render_page():
     </div>
     """), unsafe_allow_html=True)
     
-    # Hero Visualizer Section
+    # 1. Hero Visualizer Section
     c_gauge, c_details = st.columns([5, 7])
     
     with c_gauge:
@@ -64,7 +65,7 @@ def render_page():
         
     st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
     
-    # Detailed Economic Transparency Section
+    # 2. Detailed Economic Transparency Section
     st.markdown(textwrap.dedent("""
     <div class="quant-card">
         <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">
@@ -118,3 +119,54 @@ def render_page():
         </table>
     </div>
     """), unsafe_allow_html=True)
+    
+    st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
+    
+    # 3. Prediction Model Walk-Forward Validation & Acceptance Gate Section
+    st.markdown(textwrap.dedent("""
+    <div class="quant-card">
+        <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">
+            🤖 PREDICTION MODEL WALK-FORWARD RESEARCH & ACCEPTANCE AUDIT
+        </div>
+        <div style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 15px;">
+            Rigorous evaluation of point-in-time machine learning models predicting <code>P(TP1 before SL)</code> across chronological walk-forward splits on pre-2025 Forex market data.
+        </div>
+    </div>
+    """), unsafe_allow_html=True)
+    
+    # Load model metadata
+    meta_path = "LIVE_HARMONIC_SCANNER/models/model_metadata.json"
+    if not os.path.exists(meta_path):
+        meta_path = "models/model_metadata.json"
+        
+    if os.path.exists(meta_path):
+        with open(meta_path, "r", encoding="utf-8") as f:
+            meta = json.load(f)
+            
+        gate_pass = meta.get('gate_passed', False)
+        
+        if not gate_pass:
+            st.error("⚠️ **MODEL NOT DEPLOYED — NO ROBUST OOS PREDICTIVE EDGE FOUND**")
+            st.markdown("""
+            > **Scientific Integrity Notice**: The walk-forward machine learning models evaluated on pre-2025 point-in-time features failed to beat the naive base-rate Brier score out-of-sample. To maintain strict quantitative rigor, **no fabricated prediction probabilities are displayed in the live scanner**. The scanner operates purely on causal geometric detection.
+            """)
+        else:
+            st.success("✅ **MODEL DEPLOYED — VALIDATED OOS PREDICTIVE EDGE**")
+            
+        c_m1, c_m2, c_m3 = st.columns(3)
+        with c_m1:
+            st.metric("Model Architecture", meta.get('model_name', 'HistGradientBoosting'))
+            st.metric("Dataset Size (N)", meta.get('dataset_size_n', 289))
+        with c_m2:
+            st.metric("Out-of-Sample ROC-AUC", f"{meta.get('best_model', {}).get('oos_auc', 0.50):.4f}")
+            st.metric("Model Version", meta.get('model_version', 'v1'))
+        with c_m3:
+            st.metric("OOS Brier Score", f"{meta.get('best_model', {}).get('oos_brier', 0.1621):.4f}")
+            st.metric("Naive Climatology Brier", f"{meta.get('naive_baseline_brier', 0.1562):.4f}")
+            
+        # Probability Bucket Breakdown Table
+        st.markdown("<div style='font-size: 0.95rem; font-weight: 700; color: #FFFFFF; margin-top: 15px; margin-bottom: 8px;'>Probability Bucket Reliability Breakdown</div>", unsafe_allow_html=True)
+        buckets = meta.get('bucket_table', [])
+        if buckets:
+            df_b = pd.DataFrame(buckets)
+            st.dataframe(df_b, use_container_width=True)

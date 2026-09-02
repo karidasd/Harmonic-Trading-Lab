@@ -11,7 +11,7 @@ from harmonic.scanner import LiveHarmonicScanner
 from storage.database import HarmonicDatabase
 
 st.set_page_config(
-    page_title="Live Harmonic Pattern Scanner",
+    page_title="Harmonic Trading Lab — Active Scanner & Forward Engine",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -39,18 +39,19 @@ with st.sidebar:
             ⚡ HARMONIC TRADING LAB
         </div>
         <div style="font-size: 0.75rem; color: #94A3B8; font-weight: 500;">
-            Live Harmonic Scanner
+            Active Harmonic Scanner & Research
         </div>
     </div>
     """, unsafe_allow_html=True)
     
     pages_list = [
-        "01 LIVE SCANNER",
+        "01 ACTIVE SCANNER",
         "02 PATTERN CHART",
         "03 MARKET MATRIX",
-        "04 PATTERN EXPLORER",
-        "05 RESEARCH",
-        "06 METHODOLOGY"
+        "04 FORWARD PREDICTIONS",
+        "05 PATTERN EXPLORER",
+        "06 RESEARCH",
+        "07 METHODOLOGY"
     ]
     
     # Query param routing support
@@ -90,7 +91,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 # Page Router
-if page == "01 LIVE SCANNER":
+if page == "01 ACTIVE SCANNER":
     from views.page_live_scanner import render_page
     render_page()
 elif page == "02 PATTERN CHART":
@@ -99,12 +100,15 @@ elif page == "02 PATTERN CHART":
 elif page == "03 MARKET MATRIX":
     from views.page_market_matrix import render_page
     render_page()
-elif page == "04 PATTERN EXPLORER":
+elif page == "04 FORWARD PREDICTIONS":
+    from views.page_forward_predictions import render_page
+    render_page()
+elif page == "05 PATTERN EXPLORER":
     from views.page_pattern_explorer import render_page
     render_page()
-elif page == "05 RESEARCH":
+elif page == "06 RESEARCH":
     from views.page_research import render_page
     render_page()
-elif page == "06 METHODOLOGY":
+elif page == "07 METHODOLOGY":
     from views.page_methodology import render_page
     render_page()

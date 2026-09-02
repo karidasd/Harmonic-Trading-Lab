@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
 from harmonic.detector import HarmonicDetector
 from harmonic.states import PatternState
+from prediction.predictor import HarmonicPredictor
+from prediction.outcome_tracker import OutcomeTracker
 
 class PatternEvent:
     def __init__(
@@ -61,6 +63,8 @@ class LiveHarmonicScanner:
     def __init__(self, data_provider):
         self.data_provider = data_provider
         self.detector = HarmonicDetector(left_bars=5, right_bars=5, min_leg_bars=3)
+        self.predictor = HarmonicPredictor()
+        self.seen_pattern_ids = set() # Session pattern tracking
         self.seen_event_keys = set() # (pattern_id, state)
 
     def scan_market(
@@ -74,6 +78,7 @@ class LiveHarmonicScanner:
         
         all_patterns = []
         new_events = []
+        new_patterns_count = 0
         markets_scanned = 0
         now_utc = datetime.now(timezone.utc)
         
@@ -95,6 +100,34 @@ class LiveHarmonicScanner:
                     detect_time += (time.time() - t0_d)
                     
                     for p in pats:
+                        pid = p['pattern_id']
+                        is_new = pid not in self.seen_pattern_ids
+                        if is_new:
+                            self.seen_pattern_ids.add(pid)
+                            new_patterns_count += 1
+                        p['is_new_in_session'] = is_new
+                        
+                        # 3. Apply Prediction & Outcome Layer for Completed Patterns
+                        if p.get('state') == 'COMPLETED':
+                            pred_res = self.predictor.predict_pattern(p, df)
+                            p['p_tp1'] = pred_res.get('p_tp1')
+                            p['p_tp2'] = pred_res.get('p_tp2')
+                            p['confidence'] = pred_res.get('confidence', 'NO_EDGE')
+                            p['model_name'] = pred_res.get('model_name', 'None')
+                            p['model_version'] = pred_res.get('model_version', 'NO_EDGE_NOT_DEPLOYED')
+                            
+                            # Outcome tracking on forward bars
+                            outcome = OutcomeTracker.evaluate_outcome(p, df)
+                            p['forward_status'] = outcome.get('status', 'ACTIVE')
+                            p['outcome_eval'] = outcome
+                        else:
+                            p['p_tp1'] = None
+                            p['p_tp2'] = None
+                            p['confidence'] = 'N/A'
+                            p['model_name'] = 'None'
+                            p['model_version'] = 'None'
+                            p['forward_status'] = p.get('state')
+                            
                         all_patterns.append(p)
                         
                         # Deduplicated Event Generation
@@ -130,6 +163,7 @@ class LiveHarmonicScanner:
         return {
             'patterns': all_patterns,
             'events': new_events,
+            'new_patterns_count': new_patterns_count,
             'markets_scanned': markets_scanned,
             'data_fetch_latency_sec': round(fetch_time, 3),
             'detection_latency_sec': round(detect_time, 3),
