@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
+import textwrap
 from datetime import datetime, timezone
 from typing import Dict, Any
 
@@ -18,7 +19,7 @@ def render_command_header(provider_status: Dict[str, Any], last_scan_time: datet
         t_lat = scan_res.get('scan_duration_sec', 0.0)
         latency_str = f" | Latency: [Fetch: {f_lat:.2f}s | Detect: {d_lat:.2f}s | Total: {t_lat:.2f}s]"
         
-    st.markdown(f"""
+    html = f"""
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1E293B; padding-bottom: 15px; margin-bottom: 20px;">
         <div>
             <div style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; color: #FFFFFF;">
@@ -33,38 +34,39 @@ def render_command_header(provider_status: Dict[str, Any], last_scan_time: datet
             <div style="color: #64748B; margin-top: 4px;">UTC: {datetime.now(timezone.utc).strftime('%H:%M:%S')} | Scanned: {markets_count} Markets{latency_str}</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(textwrap.dedent(html), unsafe_allow_html=True)
 
 def render_hero_metrics(active_cnt: int, markets_cnt: int):
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.markdown("""
+        st.markdown(textwrap.dedent("""
         <div class="hero-metric-box">
             <div class="hero-metric-val">71.8%</div>
             <div class="hero-metric-label">GROSS HISTORICAL WR</div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
     with c2:
-        st.markdown("""
+        st.markdown(textwrap.dedent("""
         <div class="hero-metric-box">
             <div class="hero-metric-val" style="color: #10B981;">0</div>
             <div class="hero-metric-label">REPAINT FAILURES</div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
     with c3:
-        st.markdown("""
+        st.markdown(textwrap.dedent("""
         <div class="hero-metric-box">
             <div class="hero-metric-val">16,276</div>
             <div class="hero-metric-label">CAUSAL REPLAY TESTS</div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
     with c4:
-        st.markdown(f"""
+        st.markdown(textwrap.dedent(f"""
         <div class="hero-metric-box">
             <div class="hero-metric-val" style="color: #F59E0B;">{active_cnt}</div>
             <div class="hero-metric-label">PATTERNS IN CURRENT SCAN</div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
 
 def render_win_rate_gauge(gross_wr: float = 71.78, avg_win_r: float = 0.401, avg_loss_r: float = -1.000) -> go.Figure:
     fig = go.Figure(go.Indicator(
@@ -86,7 +88,7 @@ def render_win_rate_gauge(gross_wr: float = 71.78, avg_win_r: float = 0.401, avg
             'threshold': {
                 'line': {'color': "#EF4444", 'width': 3},
                 'thickness': 0.75,
-                'value': 71.4 # Break-even threshold
+                'value': 71.4
             }
         }
     ))

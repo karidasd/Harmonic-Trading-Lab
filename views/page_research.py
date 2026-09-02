@@ -1,5 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
+import textwrap
 from research.research_metrics import ResearchDataLoader
 from ui.components import render_win_rate_gauge
 
@@ -8,7 +9,7 @@ def render_page():
     val_fx = res_data.get('validation_baseline_fx_only', {})
     hero = res_data.get('hero_metric', {})
     
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     <div style="border-bottom: 1px solid #1E293B; padding-bottom: 10px; margin-bottom: 20px;">
         <div style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF;">
             🔬 HARMONIC EDGE RESEARCH & BASELINE VALIDATION
@@ -17,7 +18,7 @@ def render_page():
             Frozen Baseline Out-of-Sample Economic Results (Protocol SHA256: 1df0110e1870be701734b952a6a201fa4fc9beef219fd99620a628a774c92482)
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)
     
     # Hero Visualizer Section
     c_gauge, c_details = st.columns([5, 7])
@@ -31,7 +32,7 @@ def render_page():
         st.plotly_chart(fig_gauge, use_container_width=True)
         
     with c_details:
-        st.markdown("""
+        st.markdown(textwrap.dedent("""
         <div class="quant-card">
             <div style="font-size: 1.2rem; font-weight: 800; color: #FFFFFF; margin-bottom: 6px;">
                 71.8% GROSS HISTORICAL WIN RATE
@@ -59,12 +60,12 @@ def render_page():
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """), unsafe_allow_html=True)
         
     st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
     
     # Detailed Economic Transparency Section
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     <div class="quant-card">
         <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 10px;">
             📊 AFTER TRANSACTION COSTS (TRANSPARENT SCIENTIFIC REPORTING)
@@ -116,4 +117,4 @@ def render_page():
             </tbody>
         </table>
     </div>
-    """, unsafe_allow_html=True)
+    """), unsafe_allow_html=True)

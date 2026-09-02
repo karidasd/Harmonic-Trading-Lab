@@ -10,70 +10,56 @@ def render_pattern_card(pattern: Dict[str, Any]):
     state = pattern.get('state', 'FORMING')
     quality = pattern.get('quality_score', 0)
     
-    dir_color = "#10B981" if dir_str == "BULLISH" else "#EF4444"
-    state_badge_cls = {
-        'COMPLETED': 'badge-completed',
-        'POTENTIAL_D': 'badge-potential',
-        'FORMING': 'badge-forming',
-        'INVALIDATED': 'badge-invalidated'
-    }.get(state, 'badge-forming')
-    
     prec = InstrumentFormatter.get_precision(sym)
+    dir_emoji = "🟢" if dir_str == "BULLISH" else "🔴"
     
-    st.markdown(f"""
-    <div class="quant-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1E293B; padding-bottom: 10px; margin-bottom: 15px;">
-            <div>
-                <span style="font-size: 1.4rem; font-weight: 800; font-family: 'JetBrains Mono';">{sym}</span>
-                <span style="font-size: 0.9rem; color: #94A3B8; margin-left: 8px;">{tf}</span>
-            </div>
-            <div>
-                <span class="badge {state_badge_cls}">{state}</span>
-            </div>
-        </div>
+    with st.container(border=True):
+        # Header Row
+        col_hdr_left, col_hdr_right = st.columns([7, 5])
+        with col_hdr_left:
+            st.markdown(f"### {sym} `{tf}`")
+            st.markdown(f"{dir_emoji} **{dir_str} {ptype}**")
+        with col_hdr_right:
+            st.markdown(f"**State:** `{state}`")
+            st.markdown(f"**Quality:** `{quality}/100`")
+            
+        st.divider()
         
-        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-            <div>
-                <div style="font-size: 0.75rem; color: #64748B; font-weight: 600;">PATTERN & DIRECTION</div>
-                <div style="font-size: 1.05rem; font-weight: 700; color: {dir_color}; font-family: 'JetBrains Mono';">{dir_str} {ptype}</div>
-            </div>
-            <div style="text-align: right;">
-                <div style="font-size: 0.75rem; color: #64748B; font-weight: 600;">GEOMETRY QUALITY</div>
-                <div style="font-size: 1.05rem; font-weight: 800; color: #00F0FF; font-family: 'JetBrains Mono';">{quality} / 100</div>
-            </div>
-        </div>
+        # Price & PRZ Row
+        prz_l = pattern.get('prz_low', 0)
+        prz_h = pattern.get('prz_high', 0)
+        d_p = pattern.get('D_price', 0)
+        cur_p = pattern.get('current_price', 0)
         
-        <div style="background: #080B10; border-radius: 6px; padding: 12px; margin-bottom: 15px; font-family: 'JetBrains Mono'; font-size: 0.85rem;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <span style="color: #64748B;">PRZ Zone:</span>
-                <span>{pattern.get('prz_low', 0):.{prec}f} – {pattern.get('prz_high', 0):.{prec}f}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <span style="color: #64748B;">D Price / Target:</span>
-                <span>{pattern.get('D_price', 0):.{prec}f}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <span style="color: #64748B;">Current Market:</span>
-                <span style="color: #00F0FF;">{pattern.get('current_price', 0):.{prec}f}</span>
-            </div>
-        </div>
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.caption("PRZ ZONE")
+            st.markdown(f"`{prz_l:.{prec}f} – {prz_h:.{prec}f}`")
+        with c2:
+            st.caption("D PRICE")
+            st.markdown(f"`{d_p:.{prec}f}`")
+        with c3:
+            st.caption("CURRENT PRICE")
+            st.markdown(f"`{cur_p:.{prec}f}`")
+            
+        # Ratios Row
+        ratios = pattern.get('ratios', {})
+        if ratios:
+            r_str = "  •  ".join([f"**{k}:** `{v:.3f}`" for k, v in ratios.items()])
+            st.markdown(f"<span style='font-size:0.85rem; color:#94A3B8;'>{r_str}</span>", unsafe_allow_html=True)
+            
+        st.divider()
         
-        <div style="border-top: 1px solid #1E293B; padding-top: 12px;">
-            <div style="font-size: 0.75rem; color: #94A3B8; font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">RESEARCH LEVELS (Descriptive)</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.8rem;">
-                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 4px; padding: 6px;">
-                    <div style="color: #EF4444; font-size: 0.7rem;">STRUCTURAL SL</div>
-                    <div>{pattern.get('structural_stop', 0):.{prec}f}</div>
-                </div>
-                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; padding: 6px;">
-                    <div style="color: #10B981; font-size: 0.7rem;">RESEARCH T1</div>
-                    <div>{pattern.get('target_1', 0):.{prec}f}</div>
-                </div>
-                <div style="background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); border-radius: 4px; padding: 6px;">
-                    <div style="color: #34D399; font-size: 0.7rem;">RESEARCH T2</div>
-                    <div>{pattern.get('target_2', 0):.{prec}f}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        # Research Levels
+        st.caption("DESCRIPTIVE RESEARCH LEVELS")
+        sl = pattern.get('structural_stop', 0)
+        t1 = pattern.get('target_1', 0)
+        t2 = pattern.get('target_2', 0)
+        
+        c_l1, c_l2, c_l3 = st.columns(3)
+        with c_l1:
+            st.markdown(f"🔴 **SL:** `{sl:.{prec}f}`")
+        with c_l2:
+            st.markdown(f"🟢 **T1:** `{t1:.{prec}f}`")
+        with c_l3:
+            st.markdown(f"🟢 **T2:** `{t2:.{prec}f}`")

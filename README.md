@@ -11,14 +11,15 @@
 
 ---
 
-### 71.8% GROSS HISTORICAL WIN RATE
-**Causal • Non-Repainting • Multi-Market Forex Scanner**
+## 71.8% GROSS HISTORICAL WIN RATE
 
-![Harmonic Trading Lab Live Scanner](assets/live-scanner.png)
+Causal • Non-Repainting • Multi-Market Forex Scanner
+
+![Harmonic Trading Lab Live Scanner](./assets/live-scanner.png)
 
 👉 **[▶ Open Harmonic Trading Lab on Streamlit Community Cloud](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)**
 
-> *Can a 71.8% win-rate strategy still fail to produce an economic edge?*
+> Can a 71.8% win-rate strategy still fail to produce an economic edge?
 
 ---
 
@@ -45,13 +46,21 @@
 
 ## Application Showcase
 
-| Pattern Chart & Geometry | Market Heatmap Matrix |
-| :---: | :---: |
-| ![Pattern Chart](assets/pattern-chart.png) | ![Market Matrix](assets/market-matrix.png) |
+### Pattern Chart & Geometry
 
-| Research & Baseline Validation | Causal Non-Repainting Methodology |
-| :---: | :---: |
-| ![Research Dashboard](assets/research-dashboard.png) | ![Causal Methodology](assets/causal-validation.png) |
+![Pattern Chart](./assets/pattern-chart.png)
+
+### Market Heatmap Matrix
+
+![Market Matrix](./assets/market-matrix.png)
+
+### Research & Baseline Validation
+
+![Research Dashboard](./assets/research-dashboard.png)
+
+### Causal Non-Repainting Methodology
+
+![Causal Validation](./assets/causal-validation.png)
 
 ---
 
