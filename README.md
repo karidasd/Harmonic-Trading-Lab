@@ -1,11 +1,17 @@
 # ⚡ HARMONIC TRADING LAB
 ### Live AB=CD & Gartley Harmonic Pattern Scanner
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io)
 [![Plotly](https://img.shields.io/badge/Plotly-5.18%2B-3F4F75.svg)](https://plotly.com)
 [![Tests](https://img.shields.io/badge/Causal%20Tests-100%25%20PASS-10B981.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
+
+### 🌐 Live Public Demonstration
+👉 **[Open Harmonic Trading Lab on Streamlit Community Cloud](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)**
 
 ---
 
@@ -82,6 +88,14 @@ While the geometric detector achieves an impressive **71.78% gross directional a
 When realistic ECN spreads, slippage, and execution commissions ($0.083\text{R}$) are deducted:
 - **Net Expectancy**: `-0.0777R`
 - **Profit Factor after Costs**: `0.7542`
+
+---
+
+## 💾 Storage & Forward Tracking Architecture
+
+Harmonic Trading Lab incorporates a local SQLite database for deduplication and prospective signal recording:
+- **Local Runs**: Persisted in `storage/harmonic_scanner.db`.
+- **Streamlit Community Cloud Notice**: When running on Streamlit Cloud containers, the local SQLite database is ephemeral and resets during container redeployments or cold restarts. For institutional multi-month forward recording, a persistent external database (e.g. Supabase, PostgreSQL) can be connected.
 
 ---
 
