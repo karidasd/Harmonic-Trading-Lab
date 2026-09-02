@@ -1,4 +1,5 @@
 # ⚡ HARMONIC TRADING LAB
+
 ### Live AB=CD & Gartley Harmonic Pattern Scanner
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)
@@ -10,22 +11,18 @@
 
 ---
 
-### 🌐 Live Public Demonstration
-👉 **[Open Harmonic Trading Lab on Streamlit Community Cloud](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)**
-
----
-
-## 🎯 71.8% GROSS HISTORICAL WIN RATE
-
-> **"Can a 71.8% win-rate strategy still fail to produce an economic edge?"**
-> 
-> Harmonic Trading Lab combines an active **Live Harmonic Market Scanner** with a **causal, non-repainting research framework** to explore and demonstrate exactly that fundamental market mechanics question.
+### 71.8% GROSS HISTORICAL WIN RATE
+**Causal • Non-Repainting • Multi-Market Forex Scanner**
 
 ![Harmonic Trading Lab Live Scanner](assets/live-scanner.png)
 
+👉 **[▶ Open Harmonic Trading Lab on Streamlit Community Cloud](https://share.streamlit.io/karidasd/harmonic-trading-lab/main/dashboard.py)**
+
+> *Can a 71.8% win-rate strategy still fail to produce an economic edge?*
+
 ---
 
-## 💎 Hero Research Findings (Frozen FX Baseline)
+## Hero Research Findings (Frozen FX Baseline)
 
 | 71.8% | 0 | 16,276 | +0.005R |
 | :---: | :---: | :---: | :---: |
@@ -35,18 +32,18 @@
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-- **⚡ Real-Time Multi-Market Scanner**: Scans 10 currency pairs across M15, M30, H1, and H4 simultaneously with sub-second execution.
-- **🛡️ 100% Causal & Non-Repainting**: Strict 5-bar left / 5-bar right pivot engine ensures zero lookahead bias. Swing points never mutate or shift retroactively.
-- **📊 Interactive Quant Charts**: Dark terminal Plotly candlestick charts with XABCD legs, translucent Potential Reversal Zones (PRZ), and objective research levels.
-- **🔄 Live State Machine**: Tracks patterns through `FORMING` $\rightarrow$ `POTENTIAL_D` $\rightarrow$ `COMPLETED` $\rightarrow$ `INVALIDATED`.
-- **🌐 Cross-Market Matrix**: Compact multi-timeframe radar grid showing active harmonic structures at a glance.
-- **☁️ Cloud & Demo Ready**: Operates seamlessly in **Cloud Mode** (Yahoo Finance) or **Offline Demo Mode** (zero external dependencies), with optional **MetaTrader 5** integration for institutional live execution.
+- **Live / Delayed Multi-Market Scanner**: Scans 10 currency pairs across M15, M30, H1, and H4 simultaneously with sub-second execution.
+- **100% Causal & Non-Repainting**: Strict 5-bar left / 5-bar right pivot engine ensures zero lookahead bias. Swing points never mutate or shift retroactively.
+- **Interactive Quant Charts**: Dark terminal Plotly candlestick charts with XABCD legs, translucent Potential Reversal Zones (PRZ), and objective research levels.
+- **Live State Machine**: Tracks patterns through `FORMING` $\rightarrow$ `POTENTIAL_D` $\rightarrow$ `COMPLETED` $\rightarrow$ `INVALIDATED`.
+- **Cross-Market Matrix**: Compact multi-timeframe radar grid showing active harmonic structures at a glance.
+- **Cloud & Demo Ready**: Operates seamlessly in **Cloud Mode** (Yahoo Finance) or **Offline Demo Mode** (zero external dependencies), with optional MetaTrader 5 live data integration.
 
 ---
 
-## 📸 Application Showcase
+## Application Showcase
 
 | Pattern Chart & Geometry | Market Heatmap Matrix |
 | :---: | :---: |
@@ -58,7 +55,7 @@
 
 ---
 
-## 📐 Non-Repainting Causal Architecture
+## Non-Repainting Causal Architecture
 
 Many commercial harmonic indicators suffer from lookahead bias: they silently redraw swing points as new candles form.
 
@@ -76,7 +73,7 @@ Every pattern causally tracks:
 
 ---
 
-## 🔬 The Economic Reality: Win Rate vs. Payoff Asymmetry
+## The Economic Reality: Win Rate vs. Payoff Asymmetry
 
 While the geometric detector achieves an impressive **71.78% gross directional accuracy**, classical harmonic targets ($T_1 = 0.382 \times AD$) produce an asymmetric payoff ratio:
 
@@ -91,7 +88,7 @@ When realistic ECN spreads, slippage, and execution commissions ($0.083\text{R}$
 
 ---
 
-## 💾 Storage & Forward Tracking Architecture
+## Storage & Forward Tracking Architecture
 
 Harmonic Trading Lab incorporates a local SQLite database for deduplication and prospective signal recording:
 - **Local Runs**: Persisted in `storage/harmonic_scanner.db`.
@@ -99,7 +96,7 @@ Harmonic Trading Lab incorporates a local SQLite database for deduplication and 
 
 ---
 
-## 💻 Quickstart Guide
+## Quickstart Guide
 
 ### 1. Clone the Repository
 ```bash
@@ -119,7 +116,7 @@ streamlit run dashboard.py
 
 ---
 
-## ☁️ Deploy to Streamlit Community Cloud
+## Deploy to Streamlit Community Cloud
 
 1. Fork or push this repository to GitHub.
 2. Visit [share.streamlit.io](https://share.streamlit.io).
@@ -128,7 +125,7 @@ streamlit run dashboard.py
 
 ---
 
-## 🧪 Running Causal Test Suite
+## Running Causal Test Suite
 
 Run the full adversarial future-candle replay and causality test suite:
 
@@ -138,7 +135,7 @@ python -m unittest discover -s tests -t . -v
 
 ---
 
-## ⚖️ Scientific Disclaimer
+## Scientific Disclaimer
 
 *This software is provided for research and educational purposes only. Past or gross historical performance does not guarantee future results. Pattern detection and research levels do not constitute investment advice.*
 
