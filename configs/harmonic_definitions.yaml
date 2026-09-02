@@ -1,0 +1,87 @@
+# ============================================================
+# LIVE_HARMONIC_SCANNER: FROZEN HARMONIC GEOMETRY DEFINITIONS
+# ============================================================
+# Standard Classical Geometry with Causal Non-Repainting Pivots
+
+pivot_settings:
+  left_bars: 5
+  right_bars: 5
+  minimum_leg_bars: 3
+
+universe:
+  primary_fx:
+    - EURUSD
+    - GBPUSD
+    - USDJPY
+    - USDCHF
+    - AUDUSD
+    - USDCAD
+    - NZDUSD
+    - EURJPY
+    - GBPJPY
+  separate_instrument:
+    - XAUUSD
+  timeframes:
+    - H1
+    - H4
+    - M30
+    - M15
+
+patterns:
+  ABCD:
+    name: "AB=CD"
+    legs: ["A", "B", "C", "D"]
+    ratios:
+      BC_AB:
+        min: 0.382
+        max: 0.886
+      CD_BC:
+        min: 1.130
+        max: 2.618
+      CD_AB:
+        target: 1.000
+        tolerance: 0.150
+        min: 0.850
+        max: 1.150
+    prz:
+      primary_projection: "CD_AB_1.0"
+      secondary_projections: ["BC_1.272", "BC_1.618"]
+      max_width_pips: 40.0
+      max_width_atr_multiple: 1.5
+
+  GARTLEY:
+    name: "Gartley"
+    legs: ["X", "A", "B", "C", "D"]
+    ratios:
+      AB_XA:
+        target: 0.618
+        tolerance: 0.080
+        min: 0.538
+        max: 0.698
+      BC_AB:
+        min: 0.382
+        max: 0.886
+      CD_BC:
+        min: 1.130
+        max: 2.240
+      AD_XA:
+        target: 0.786
+        tolerance: 0.080
+        min: 0.706
+        max: 0.866
+    prz:
+      primary_projection: "XA_0.786"
+      secondary_projections: ["AB_CD_1.0", "BC_1.272", "BC_1.618"]
+      max_width_pips: 40.0
+      max_width_atr_multiple: 1.5
+
+states:
+  - FORMING
+  - POTENTIAL_D
+  - COMPLETED
+  - INVALIDATED
+
+quality_scoring:
+  ratio_weight: 50.0
+  prz_clustering_weight: 30.0
+  symmetry_weight: 20.0

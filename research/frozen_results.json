@@ -1,0 +1,141 @@
+{
+  "project": "HARMONIC_EDGE_RESEARCH_V02",
+  "protocol_sha256": "1df0110e1870be701734b952a6a201fa4fc9beef219fd99620a628a774c92482",
+  "status": "FROZEN_VALIDATION_BASELINE",
+  "hero_metric": {
+    "headline_gross_win_rate_pct": 71.7822,
+    "headline_gross_win_rate_display": "71.8%",
+    "headline_label": "GROSS HISTORICAL WIN RATE",
+    "headline_subtitle": "Frozen FX Validation Baseline (N=202)"
+  },
+  "causal_audit": {
+    "replay_tests_total": 16276,
+    "repaint_failures": 0,
+    "coordinate_mutations": 0,
+    "retroactive_confirmations": 0,
+    "audit_verdict": "100% CAUSAL PASS"
+  },
+  "validation_baseline_fx_only": {
+    "sample_size_N": 202,
+    "symbols": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "USDCHF",
+      "AUDUSD",
+      "USDCAD",
+      "NZDUSD",
+      "EURJPY",
+      "GBPJPY"
+    ],
+    "timeframes": [
+      "H1",
+      "H4",
+      "M30",
+      "M15"
+    ],
+    "entry_variant": "E0 (Immediate D Confirmation)",
+    "stop_variant": "S1 (Structural Invalidation + 0.5 ATR)",
+    "exit_policy": "P1 (100% at T1 = 0.382 AD)",
+    "cost_scenario": "C1 (Realistic Synthetic ECN Friction)",
+    "gross_win_rate_pct": 71.7822,
+    "mean_gross_R": 0.005368,
+    "mean_friction_R": 0.083089,
+    "mean_net_R": -0.077721,
+    "profit_factor": 0.7542,
+    "bootstrap_95_ci_lower": -0.17707,
+    "bootstrap_95_ci_upper": 0.021882,
+    "avg_gross_winner_R": 0.400582,
+    "avg_gross_loser_R": -1.0,
+    "payoff_ratio": 0.400582,
+    "implied_breakeven_win_rate_pct": 71.3989,
+    "edge_spread_pct": 0.3833,
+    "max_drawdown_R": 19.4097
+  },
+  "separate_gold_xauusd": {
+    "sample_size_N": 17,
+    "gross_win_rate_pct": 64.7059,
+    "mean_gross_R": -0.061746,
+    "mean_friction_R": 0.028726,
+    "mean_net_R": -0.090472,
+    "profit_factor": 0.7514,
+    "bootstrap_95_ci_lower": -0.453276,
+    "bootstrap_95_ci_upper": 0.255259
+  },
+  "development_baseline": {
+    "sample_size_N": 133,
+    "gross_win_rate_pct": 71.4286,
+    "mean_gross_R": 0.012295,
+    "mean_friction_R": 0.056534,
+    "mean_net_R": -0.044239,
+    "profit_factor": 0.856
+  },
+  "entry_ablation_validation_c1": [
+    {
+      "entry": "E0",
+      "name": "Immediate D Confirmation",
+      "N": 219,
+      "win_rate": 62.56,
+      "mean_gross_R": 0.000159,
+      "mean_net_R": -0.07871,
+      "profit_factor": 0.754
+    },
+    {
+      "entry": "E1",
+      "name": "PRZ Retest Confirmation",
+      "N": 190,
+      "win_rate": 52.11,
+      "mean_gross_R": -0.051748,
+      "mean_net_R": -0.166292,
+      "profit_factor": 0.672
+    },
+    {
+      "entry": "E2P",
+      "name": "Pinbar Rejection",
+      "N": 153,
+      "win_rate": 58.82,
+      "mean_gross_R": 0.131003,
+      "mean_net_R": -0.126968,
+      "profit_factor": 0.764
+    },
+    {
+      "entry": "E2E",
+      "name": "Engulfing Rejection",
+      "N": 103,
+      "win_rate": 62.14,
+      "mean_gross_R": 0.009016,
+      "mean_net_R": -0.100232,
+      "profit_factor": 0.733
+    },
+    {
+      "entry": "E3",
+      "name": "Reversal-Break Confirmation",
+      "N": 71,
+      "win_rate": 60.56,
+      "mean_gross_R": -0.045743,
+      "mean_net_R": -0.106714,
+      "profit_factor": 0.619
+    }
+  ],
+  "pattern_comparison_validation_c1": [
+    {
+      "pattern": "AB=CD",
+      "N": 203,
+      "win_rate": 62.56,
+      "mean_gross_R": 0.004563,
+      "mean_friction_R": 0.080123,
+      "mean_net_R": -0.07556,
+      "profit_factor": 0.77
+    },
+    {
+      "pattern": "Gartley",
+      "N": 16,
+      "win_rate": 62.5,
+      "mean_gross_R": -0.055717,
+      "mean_friction_R": 0.062961,
+      "mean_net_R": -0.118678,
+      "profit_factor": 0.56
+    }
+  ],
+  "disclaimer": "For research and educational purposes only. 71.8% represents gross historical win rate in the frozen validation baseline prior to transaction costs. Live pattern detection is not financial advice."
+}
