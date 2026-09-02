@@ -2,8 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import textwrap
+import importlib
 from datetime import datetime, timezone, timedelta
 from ui.formatting import InstrumentFormatter
+import ui.charts
+importlib.reload(ui.charts)
 from ui.charts import HarmonicChartBuilder
 from prediction.outcome_tracker import OutcomeTracker
 
@@ -62,7 +65,11 @@ def calculate_data_freshness(last_time: pd.Timestamp, timeframe: str) -> dict:
 def render_page():
     provider = st.session_state.data_provider
     scanner = st.session_state.scanner
-    db = st.session_state.db
+    from storage.database import HarmonicDatabase
+    db = st.session_state.get('db')
+    if db is None or not hasattr(db, 'insert_prediction'):
+        db = HarmonicDatabase()
+        st.session_state.db = db
     prov_status = provider.get_status()
     
     # Check for query params / session state selection from Active Scanner
@@ -201,7 +208,10 @@ def render_page():
                 'data_mode': mode_label,
                 'status': 'ACTIVE'
             }
-            db.insert_forward_prediction(rec)
+            if hasattr(db, 'insert_prediction'):
+                db.insert_prediction(rec)
+            elif hasattr(db, 'insert_forward_prediction'):
+                db.insert_forward_prediction(rec)
             
             # Evaluate outcome if forward bars exist
             outcome = OutcomeTracker.evaluate_outcome(p, df)

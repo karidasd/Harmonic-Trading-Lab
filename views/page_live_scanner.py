@@ -1,14 +1,23 @@
 import streamlit as st
 import time
+import importlib
 from datetime import datetime, timezone
+import ui.components
+importlib.reload(ui.components)
 from ui.components import render_command_header, render_hero_metrics
 from ui.scanner_table import render_scanner_table
 from ui.pattern_card import render_pattern_card
+import ui.charts
+importlib.reload(ui.charts)
 from ui.charts import HarmonicChartBuilder
 
 def render_page():
     scanner = st.session_state.scanner
-    db = st.session_state.db
+    from storage.database import HarmonicDatabase
+    db = st.session_state.get('db')
+    if db is None or not hasattr(db, 'save_pattern'):
+        db = HarmonicDatabase()
+        st.session_state.db = db
     prov_status = st.session_state.data_provider.get_status()
     
     # Auto-Refresh & Top Controls
@@ -36,7 +45,8 @@ def render_page():
             
             # Persist patterns & forward predictions
             for p in res['patterns']:
-                db.save_pattern(p)
+                if hasattr(db, 'save_pattern'):
+                    db.save_pattern(p)
                 if p.get('state') == 'COMPLETED':
                     rec = {
                         'pattern_id': p['pattern_id'],
@@ -69,18 +79,26 @@ def render_page():
                         'data_mode': prov_status.get('mode'),
                         'status': p.get('forward_status', 'ACTIVE')
                     }
-                    db.insert_forward_prediction(rec)
+                    if hasattr(db, 'insert_prediction'):
+                        db.insert_prediction(rec)
+                    elif hasattr(db, 'insert_forward_prediction'):
+                        db.insert_forward_prediction(rec)
                     
             for ev in res['events']:
-                db.record_event(ev.to_dict())
+                if hasattr(db, 'record_event'):
+                    db.record_event(ev.to_dict() if hasattr(ev, 'to_dict') else ev)
                 
-            db.record_scanner_run(
-                prov_status.get('provider_name', 'FEED'),
-                prov_status.get('mode', 'DEMO'),
-                res['markets_scanned'],
-                len(res['patterns']),
-                res['scan_duration_sec']
-            )
+            try:
+                if hasattr(db, 'record_scanner_run'):
+                    db.record_scanner_run(
+                        prov_status.get('provider_name', 'FEED'),
+                        prov_status.get('mode', 'DEMO'),
+                        res['markets_scanned'],
+                        len(res['patterns']),
+                        res['scan_duration_sec']
+                    )
+            except Exception:
+                pass
 
     res = st.session_state.last_scan_result
     all_patterns = res['patterns'] if res else []

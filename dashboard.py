@@ -26,7 +26,7 @@ if 'data_provider' not in st.session_state:
     st.session_state.data_provider = DataProviderFactory.get_provider(st.session_state.provider_mode)
 if 'scanner' not in st.session_state:
     st.session_state.scanner = LiveHarmonicScanner(st.session_state.data_provider)
-if 'db' not in st.session_state:
+if 'db' not in st.session_state or not hasattr(st.session_state.db, 'insert_prediction'):
     st.session_state.db = HarmonicDatabase()
 if 'last_scan_result' not in st.session_state:
     st.session_state.last_scan_result = None
@@ -97,28 +97,38 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
+import importlib
+
 # Page Router
 if page == "01 ACTIVE SCANNER":
-    from views.page_live_scanner import render_page
-    render_page()
+    import views.page_live_scanner
+    importlib.reload(views.page_live_scanner)
+    views.page_live_scanner.render_page()
 elif page == "02 LIVE MARKET":
-    from views.page_live_market import render_page
-    render_page()
+    import views.page_live_market
+    importlib.reload(views.page_live_market)
+    views.page_live_market.render_page()
 elif page == "03 PATTERN CHART":
-    from views.page_pattern_chart import render_page
-    render_page()
+    import views.page_pattern_chart
+    importlib.reload(views.page_pattern_chart)
+    views.page_pattern_chart.render_page()
 elif page == "04 MARKET MATRIX":
-    from views.page_market_matrix import render_page
-    render_page()
+    import views.page_market_matrix
+    importlib.reload(views.page_market_matrix)
+    views.page_market_matrix.render_page()
 elif page == "05 FORWARD PREDICTIONS":
-    from views.page_forward_predictions import render_page
-    render_page()
+    import views.page_forward_predictions
+    importlib.reload(views.page_forward_predictions)
+    views.page_forward_predictions.render_page()
 elif page == "06 PATTERN EXPLORER":
-    from views.page_pattern_explorer import render_page
-    render_page()
+    import views.page_pattern_explorer
+    importlib.reload(views.page_pattern_explorer)
+    views.page_pattern_explorer.render_page()
 elif page == "07 RESEARCH":
-    from views.page_research import render_page
-    render_page()
+    import views.page_research
+    importlib.reload(views.page_research)
+    views.page_research.render_page()
 elif page == "08 METHODOLOGY":
-    from views.page_methodology import render_page
-    render_page()
+    import views.page_methodology
+    importlib.reload(views.page_methodology)
+    views.page_methodology.render_page()
