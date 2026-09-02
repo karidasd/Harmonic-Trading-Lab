@@ -1,9 +1,13 @@
 import os
 import json
-import joblib
 import pandas as pd
 from typing import Dict, Any, Optional
 from prediction.feature_extractor import PointInTimeFeatureExtractor
+
+try:
+    import joblib
+except ImportError:
+    joblib = None
 
 class HarmonicPredictor:
     """
@@ -21,6 +25,10 @@ class HarmonicPredictor:
         self._load_model()
 
     def _load_model(self):
+        if joblib is None:
+            self.is_deployed = False
+            return
+
         # Look for model artifact
         candidates = [
             os.path.join(self.model_dir, "harmonic_predictor_v1.joblib"),

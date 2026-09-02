@@ -30,13 +30,14 @@ class TestPredictionPipeline(unittest.TestCase):
                 pass
 
     def _get_completed_pattern(self):
-        for sym in ['GBPJPY', 'GBPUSD', 'EURJPY', 'EURUSD']:
-            for tf in ['H4', 'H1', 'M30', 'M15']:
+        for sym in ['EURUSD', 'GBPUSD', 'USDCAD', 'EURJPY']:
+            for tf in ['M15', 'H1', 'H4', 'M30']:
                 df = self.prov.get_ohlcv(sym, tf, bars=300)
-                pats = self.detector.scan_dataframe(df, sym, tf)
-                completed = [p for p in pats if p.get('state') == 'COMPLETED']
-                if completed:
-                    return completed[0], df
+                if df is not None and not df.empty:
+                    pats = self.detector.scan_dataframe(df, sym, tf)
+                    completed = [p for p in pats if p.get('state') == 'COMPLETED']
+                    if completed:
+                        return completed[0], df
         return None, None
 
     def test_prediction_no_future_features(self):
