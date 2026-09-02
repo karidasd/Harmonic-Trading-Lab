@@ -121,10 +121,17 @@ def render_page():
             
             render_pattern_card(sel_pat)
             
-            # Mini Quick Chart Preview (ensure bars span the pattern)
+            # View Current Chart Navigation Button
+            if st.button("📈 VIEW CURRENT CHART", type="secondary", use_container_width=True):
+                st.session_state.selected_symbol = sel_pat['symbol']
+                st.session_state.selected_timeframe = sel_pat['timeframe']
+                st.session_state.nav_target_page = "02 LIVE MARKET"
+                st.rerun()
+            
+            # Mini Quick Chart Preview (ensure bars span through current market)
             df_chart = st.session_state.data_provider.get_ohlcv(sel_pat['symbol'], sel_pat['timeframe'], bars=300)
             if df_chart is not None and not df_chart.empty:
-                fig = HarmonicChartBuilder.build_harmonic_chart(df_chart, sel_pat, show_levels=True)
+                fig = HarmonicChartBuilder.build_harmonic_chart(df_chart, sel_pat, show_levels=True, show_current_price=True)
                 fig.update_layout(height=290, margin=dict(l=10, r=10, t=20, b=10))
                 st.plotly_chart(fig, use_container_width=True)
         else:

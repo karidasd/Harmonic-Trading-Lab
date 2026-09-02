@@ -9,7 +9,9 @@ class HarmonicChartBuilder:
     def build_harmonic_chart(
         df: pd.DataFrame,
         pattern: Optional[Dict[str, Any]] = None,
-        show_levels: bool = True
+        show_levels: bool = True,
+        show_current_price: bool = True,
+        height: int = 580
     ) -> go.Figure:
         fig = go.Figure()
         
@@ -34,12 +36,25 @@ class HarmonicChartBuilder:
             decreasing_fillcolor='#EF4444'
         ))
         
+        # 2. Current Price Line
+        if show_current_price and len(df) > 0:
+            cur_price = float(df['close'].iloc[-1])
+            fig.add_hline(
+                y=cur_price,
+                line_dash="dot",
+                line_color="#94A3B8",
+                line_width=1.2,
+                annotation_text=f"CURRENT {cur_price:.{prec}f}",
+                annotation_position="bottom right",
+                annotation_font=dict(family="JetBrains Mono", size=11, color="#E2E8F0")
+            )
+        
         if pattern:
             ptype = pattern.get('pattern_type', 'ABCD')
             direction = pattern.get('direction', 'BULLISH')
             color_leg = '#00F0FF' if direction == 'BULLISH' else '#F59E0B'
             
-            # 2. XABCD Legs & Markers
+            # 3. XABCD Legs & Markers
             if ptype == 'GARTLEY' and pattern.get('X_time') is not None:
                 x_pts = [pattern['X_time'], pattern['A_time'], pattern['B_time'], pattern['C_time'], pattern['D_time']]
                 y_pts = [pattern['X_price'], pattern['A_price'], pattern['B_price'], pattern['C_price'], pattern['D_price']]
@@ -90,7 +105,7 @@ class HarmonicChartBuilder:
                         showlegend=False
                     ))
                     
-            # 3. Potential Reversal Zone (PRZ Box)
+            # 4. Potential Reversal Zone (PRZ Box)
             prz_l = pattern.get('prz_low')
             prz_h = pattern.get('prz_high')
             if prz_l is not None and prz_h is not None and not np.isnan(prz_l):
@@ -100,30 +115,30 @@ class HarmonicChartBuilder:
                     type="rect",
                     x0=t_start, x1=t_end,
                     y0=prz_l, y1=prz_h,
-                    fillcolor="rgba(0, 240, 255, 0.15)",
+                    fillcolor="rgba(0, 240, 255, 0.12)",
                     line=dict(color="#00F0FF", width=1.5, dash="dash"),
                     name="PRZ"
                 )
                 
-            # 4. Research Trade Levels
+            # 5. Research Trade Levels
             if show_levels and pattern.get('state') == 'COMPLETED':
                 sl = pattern.get('structural_stop')
                 t1 = pattern.get('target_1')
                 t2 = pattern.get('target_2')
                 
                 if sl:
-                    fig.add_hline(y=sl, line_dash="dash", line_color="#EF4444", annotation_text=f"Research SL ({sl:.{prec}f})", annotation_position="top right")
+                    fig.add_hline(y=sl, line_dash="dash", line_color="#EF4444", annotation_text=f"Research SL ({sl:.{prec}f})", annotation_position="top right", annotation_font=dict(family="JetBrains Mono", size=10, color="#EF4444"))
                 if t1:
-                    fig.add_hline(y=t1, line_dash="dash", line_color="#10B981", annotation_text=f"Research T1 ({t1:.{prec}f})", annotation_position="top right")
+                    fig.add_hline(y=t1, line_dash="dash", line_color="#10B981", annotation_text=f"Research TP1 ({t1:.{prec}f})", annotation_position="top right", annotation_font=dict(family="JetBrains Mono", size=10, color="#10B981"))
                 if t2:
-                    fig.add_hline(y=t2, line_dash="dot", line_color="#34D399", annotation_text=f"Research T2 ({t2:.{prec}f})", annotation_position="bottom right")
+                    fig.add_hline(y=t2, line_dash="dot", line_color="#34D399", annotation_text=f"Research TP2 ({t2:.{prec}f})", annotation_position="bottom right", annotation_font=dict(family="JetBrains Mono", size=10, color="#34D399"))
 
         fig.update_layout(
             template="plotly_dark",
             paper_bgcolor="#0B0E14",
             plot_bgcolor="#0B0E14",
-            height=580,
-            margin=dict(l=20, r=20, t=40, b=20),
+            height=height,
+            margin=dict(l=20, r=20, t=35, b=20),
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 showgrid=True,

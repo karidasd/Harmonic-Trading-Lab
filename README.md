@@ -6,14 +6,14 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io)
 [![Plotly](https://img.shields.io/badge/Plotly-5.18%2B-3F4F75.svg)](https://plotly.com)
-[![Tests](https://img.shields.io/badge/Causal%20%26%20ML%20Tests-14%2F14%20PASS-10B981.svg)](tests/)
+[![Tests](https://img.shields.io/badge/Causal%20%26%20Market%20Tests-25%2F25%20PASS-10B981.svg)](tests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
 ## 71.8% GROSS HISTORICAL WIN RATE
 
-Causal • Non-Repainting • Multi-Market Forex Scanner & Forward Engine
+Causal • Non-Repainting • Multi-Market Forex Scanner & Live Market Engine
 
 ![Harmonic Trading Lab Live Scanner](./assets/live-scanner.png)
 
@@ -35,17 +35,22 @@ Causal • Non-Repainting • Multi-Market Forex Scanner & Forward Engine
 
 ## Key Features
 
+- **Live / Current Market Chart**: View the latest available Forex candles and automatically overlay newly detected causal AB=CD and Gartley patterns with real-time price lines and freshness metrics.
 - **Active Multi-Market Scanner**: Scans 10 currency pairs across M15, M30, H1, and H4 simultaneously with auto-refresh (1m, 5m, 15m, 30m) and newly detected pattern alerts.
 - **100% Causal & Non-Repainting**: Strict 5-bar left / 5-bar right pivot engine ensures zero lookahead bias. Swing points never mutate or shift retroactively.
 - **Interactive Quant Charts**: Dark terminal Plotly candlestick charts with XABCD legs, translucent Potential Reversal Zones (PRZ), and objective research levels.
 - **Live State Machine**: Tracks patterns through `FORMING` $\rightarrow$ `POTENTIAL_D` $\rightarrow$ `COMPLETED` $\rightarrow$ `ACTIVE` $\rightarrow$ `TP1_HIT` / `TP2_HIT` / `SL_HIT` / `EXPIRED`.
 - **Prospective Forward Ledger**: Deduplicated SQLite database logging forward signals with immutable initial predictions and conservative **STOP-FIRST** outcome tracking.
 - **Machine Learning Walk-Forward Research**: Includes a rigorous point-in-time machine learning pipeline (`prediction/`) evaluated on pre-2025 data with strict acceptance gates to prevent fabricating unvalidated probabilities.
-- **Cloud & Demo Ready**: Operates seamlessly in **Cloud Mode** (Yahoo Finance) or **Offline Demo Mode** (zero external dependencies), with optional MetaTrader 5 live data integration.
+- **Cloud & MT5 Data Modes**: Operates seamlessly in **Cloud Mode** (Yahoo Finance Cloud / Delayed data) or **Offline Demo Mode**, with optional **MetaTrader 5 Live Mode** when running locally connected to a live broker terminal.
 
 ---
 
 ## Application Showcase
+
+### Live Current Market Chart
+
+![Live Market Chart](./assets/live-market.png)
 
 ### Pattern Chart & Geometry
 
@@ -101,7 +106,7 @@ When realistic ECN spreads, slippage, and execution commissions ($0.083\text{R}$
 ## Storage & Forward Tracking Architecture
 
 Harmonic Trading Lab incorporates a local SQLite database for deduplication and prospective signal recording:
-- **Local Runs**: Persisted in `storage/harmonic_scanner.db`.
+- **Local Runs**: Persisted dynamically at `<REPO_ROOT>/storage/harmonic_scanner.db`.
 - **Streamlit Community Cloud Notice**: When running on Streamlit Cloud containers, the local SQLite database is ephemeral and resets during container redeployments or cold restarts. For institutional multi-month forward recording, a persistent external database (e.g. Supabase, PostgreSQL) can be connected.
 
 ---
@@ -135,9 +140,9 @@ streamlit run dashboard.py
 
 ---
 
-## Running Causal & ML Test Suite
+## Running Causal & Market Test Suite
 
-Run the full adversarial future-candle replay, causality, and prediction test suite:
+Run the full adversarial future-candle replay, causality, live market, and prediction test suite:
 
 ```bash
 python -m unittest discover -s tests -t . -v

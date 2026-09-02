@@ -11,7 +11,7 @@ from harmonic.scanner import LiveHarmonicScanner
 from storage.database import HarmonicDatabase
 
 st.set_page_config(
-    page_title="Harmonic Trading Lab — Active Scanner & Forward Engine",
+    page_title="Harmonic Trading Lab — Active Scanner & Live Market",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -30,6 +30,8 @@ if 'db' not in st.session_state:
     st.session_state.db = HarmonicDatabase()
 if 'last_scan_result' not in st.session_state:
     st.session_state.last_scan_result = None
+if 'nav_target_page' not in st.session_state:
+    st.session_state.nav_target_page = None
 
 # Sidebar Navigation
 with st.sidebar:
@@ -46,21 +48,26 @@ with st.sidebar:
     
     pages_list = [
         "01 ACTIVE SCANNER",
-        "02 PATTERN CHART",
-        "03 MARKET MATRIX",
-        "04 FORWARD PREDICTIONS",
-        "05 PATTERN EXPLORER",
-        "06 RESEARCH",
-        "07 METHODOLOGY"
+        "02 LIVE MARKET",
+        "03 PATTERN CHART",
+        "04 MARKET MATRIX",
+        "05 FORWARD PREDICTIONS",
+        "06 PATTERN EXPLORER",
+        "07 RESEARCH",
+        "08 METHODOLOGY"
     ]
     
-    # Query param routing support
+    # Query param or session state routing support
     default_idx = 0
-    qp = st.query_params.get("page", "")
-    for i, p_name in enumerate(pages_list):
-        if qp.lower() in p_name.lower().replace(" ", "_"):
-            default_idx = i
-            break
+    if st.session_state.nav_target_page and st.session_state.nav_target_page in pages_list:
+        default_idx = pages_list.index(st.session_state.nav_target_page)
+        st.session_state.nav_target_page = None
+    else:
+        qp = st.query_params.get("page", "")
+        for i, p_name in enumerate(pages_list):
+            if qp.lower() in p_name.lower().replace(" ", "_"):
+                default_idx = i
+                break
             
     page = st.radio(
         "NAVIGATION",
@@ -84,7 +91,7 @@ with st.sidebar:
     
     st.markdown("""
     <div style="margin-top: 40px; font-size: 0.75rem; color: #64748B; border-top: 1px solid #1E293B; padding-top: 10px;">
-        <div>Version: <b>2.0.0-PROD</b></div>
+        <div>Version: <b>2.1.0-PROD</b></div>
         <div>Causal Replay: <b>16,276 Pass</b></div>
         <div style="margin-top: 8px;"><a href="https://github.com/karidasd/Harmonic-Trading-Lab" target="_blank" style="color: #00F0FF; text-decoration: none;">GitHub Repository ↗</a></div>
     </div>
@@ -94,21 +101,24 @@ with st.sidebar:
 if page == "01 ACTIVE SCANNER":
     from views.page_live_scanner import render_page
     render_page()
-elif page == "02 PATTERN CHART":
+elif page == "02 LIVE MARKET":
+    from views.page_live_market import render_page
+    render_page()
+elif page == "03 PATTERN CHART":
     from views.page_pattern_chart import render_page
     render_page()
-elif page == "03 MARKET MATRIX":
+elif page == "04 MARKET MATRIX":
     from views.page_market_matrix import render_page
     render_page()
-elif page == "04 FORWARD PREDICTIONS":
+elif page == "05 FORWARD PREDICTIONS":
     from views.page_forward_predictions import render_page
     render_page()
-elif page == "05 PATTERN EXPLORER":
+elif page == "06 PATTERN EXPLORER":
     from views.page_pattern_explorer import render_page
     render_page()
-elif page == "06 RESEARCH":
+elif page == "07 RESEARCH":
     from views.page_research import render_page
     render_page()
-elif page == "07 METHODOLOGY":
+elif page == "08 METHODOLOGY":
     from views.page_methodology import render_page
     render_page()
